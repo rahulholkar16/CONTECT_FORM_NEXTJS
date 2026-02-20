@@ -10,7 +10,7 @@ const Contact_form = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  const onSubmit = async (formData) => {};
+  const onSubmit = async (formData) => { };
 
   return (
     <Card className={'w-full max-w-2xl mx-auto'}>
