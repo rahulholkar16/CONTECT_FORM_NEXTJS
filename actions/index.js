@@ -1,3 +1,4 @@
+"use server"
 import { connectDB } from "@/lib/db";
 import { ContactModel } from "@/models/contact.model";
 
