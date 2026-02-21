@@ -5,12 +5,25 @@ import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
+import { createContact } from '@/actions';
+import toast from 'react-hot-toast';
 
 const Contact_form = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const onSubmit = async (formData) => { };
+  
+  const onSubmit = async (formData) => {
+    setIsSubmitting(true);
+    console.log(formData);
+    const res = await createContact(formData);
+    if (res.success) {
+      toast.success("Message sent successfully");
+      const form = document.getElementById("contact-form");
+      form.reset();
+    } else {
+      toast.error("Error: failed to send message.");
+    }
+    setIsSubmitting(false);
+  };
 
   return (
     <Card className={'w-full max-w-2xl mx-auto'}>
