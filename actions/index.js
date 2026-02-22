@@ -35,3 +35,20 @@ export async function createContact (formData) {
         };
     }
 };
+
+export async function getContacts () {
+    try {
+        await connectDB();
+        const contacts = await ContactModel.find().sort({ createdAt: -1 }).lean();
+        return contacts.map((contact) => ({
+            ...contact,
+        }));
+    } catch (error) {
+        console.error("Error in GET contacts: ", error);
+        return {
+            success: false,
+            error: erroe,
+            contacts: []
+        }
+    }
+};
