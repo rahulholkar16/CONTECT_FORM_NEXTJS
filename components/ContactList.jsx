@@ -1,0 +1,51 @@
+import { getContacts } from '@/actions';
+import React from 'react'
+import { Badge } from './ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Mail } from 'lucide-react';
+
+const ContactList = async () => {
+    const contacts = await getContacts();
+    console.log(contacts);
+    return (
+        <div className='space-y-6'>
+            <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">Contact Messages</h2>
+                <Badge variant="secondary">{contacts.length} messages</Badge>
+            </div>
+            {
+                contacts.length === 0 ? (
+                    <Card>
+                        <CardContent className={"flex flex-col items-center justify-center py-12"}>
+                            <Mail className="h-12 w-12 text-muted-foreground mb-4"/>
+                            <h3 className="text-lg font-semibold mb-2">No message yet</h3>
+                        </CardContent>
+                    </Card>
+                ) : (
+                    <div className="grid gap-4">
+                        { contacts.map((contact) => (
+                            <Card key={contact._id.toString()}>
+                                <CardHeader className="pb-3">
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <CardTitle className="text-lg">{contact?.subject}</CardTitle>
+                                            <p className='text-sm text-muted-foreground'>
+                                                From: {contact?.name} ({contact?.email})
+                                            </p>
+                                        </div>
+                                        <Badge className={contact?.status === 'new' ? 'default' : 'secondary'}>{contact?.status}</Badge>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-sm text-muted-foreground mb-4">{contact?.message}</p>
+                                </CardContent>
+                            </Card>
+                        )) }
+                    </div>
+                )
+            }
+        </div>
+    )
+}
+
+export default ContactList;
