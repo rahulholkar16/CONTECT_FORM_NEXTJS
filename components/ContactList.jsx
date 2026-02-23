@@ -1,8 +1,9 @@
-import { getContacts } from '@/actions';
+import { getContacts, updateStatus } from '@/actions';
 import React from 'react'
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Mail } from 'lucide-react';
+import { Button } from './ui/button';
 
 const ContactList = async () => {
     const contacts = await getContacts();
@@ -42,6 +43,28 @@ const ContactList = async () => {
                                         <p className='text-xs text-muted-foreground'>
                                             {new Date(contact.createdAt).toLocaleDateString()}
                                         </p>
+                                        <div className='flex gap-2'>
+                                            {contact.status === 'new' && (
+                                                <form action={async () => {
+                                                    "use server"
+                                                    await updateStatus(contact._id, "read")
+                                                }}>
+                                                    <Button variant='outline' size='sm' type='submit'>
+                                                        Marks as Read
+                                                    </Button>
+                                                </form>
+                                            )}
+                                            {contact.status === 'read' && (
+                                                <form action={async () => {
+                                                    "use server"
+                                                    await updateStatus(contact._id, "replied")
+                                                }}>
+                                                    <Button variant='outline' size='sm' type='submit'>
+                                                        Marks as Replied
+                                                    </Button>
+                                                </form>
+                                            )}
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>
