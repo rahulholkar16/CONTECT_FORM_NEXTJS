@@ -38,6 +38,11 @@ const ContactList = async () => {
                                 </CardHeader>
                                 <CardContent>
                                     <p className="text-sm text-muted-foreground mb-4">{contact?.message}</p>
+                                    <div className='flex items-center justify-between pt-4 border-t'>
+                                        <p className='text-xs text-muted-foreground'>
+                                            {new Date(contact.createdAt).toLocaleDateString()}
+                                        </p>
+                                    </div>
                                 </CardContent>
                             </Card>
                         )) }
