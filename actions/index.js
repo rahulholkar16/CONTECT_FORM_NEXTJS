@@ -52,3 +52,17 @@ export async function getContacts () {
         }
     }
 };
+
+export async function updateStatus (contactId, status) {
+    try {
+        await connectDB();
+        await ContactModel.findByIdAndUpdate(courseId, { status });
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to update status: ", error);
+        return {
+            success: false,
+            error: `Failed to update status: ${error}`
+        };
+    }
+};
