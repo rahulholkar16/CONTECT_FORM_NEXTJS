@@ -1,7 +1,7 @@
 "use server"
 import { connectDB } from "@/lib/db";
 import { ContactModel } from "@/models/contact.model";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 
 export async function createContact (formData) {
     try {
@@ -58,7 +58,7 @@ export async function updateStatus (contactId, status) {
     try {
         await connectDB();
         await ContactModel.findByIdAndUpdate(contactId, { status });
-        revalidatePath("/contacts");
+        revalidateTag("contact-stats");
         return { success: true };
     } catch (error) {
         console.error("Failed to update status: ", error);
@@ -67,4 +67,17 @@ export async function updateStatus (contactId, status) {
             error: `Failed to update status: ${error}`
         };
     }
+};
+
+export async function getContactStats () {
+    const getCachedStats = unstable_cache(async () => {
+        await connectDB();
+        const total = await ContactModel.countDocuments();
+        const newStats = await ContactModel.countDocuments({ status: "new" });
+        const readStats = await ContactModel.countDocuments({ status: "read" });
+        const repliedStats = await ContactModel.countDocuments({ status: "replied" });
+
+        return { total, newStats, readStats, repliedStats };
+    }, ["contact-stats"], { tags: ["contact-stats"] });
+    return getCachedStats();
 };
