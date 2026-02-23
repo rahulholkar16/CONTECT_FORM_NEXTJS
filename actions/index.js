@@ -1,6 +1,7 @@
 "use server"
 import { connectDB } from "@/lib/db";
 import { ContactModel } from "@/models/contact.model";
+import { revalidatePath } from "next/cache";
 
 export async function createContact (formData) {
     try {
@@ -56,7 +57,8 @@ export async function getContacts () {
 export async function updateStatus (contactId, status) {
     try {
         await connectDB();
-        await ContactModel.findByIdAndUpdate(courseId, { status });
+        await ContactModel.findByIdAndUpdate(contactId, { status });
+        revalidatePath("/contacts");
         return { success: true };
     } catch (error) {
         console.error("Failed to update status: ", error);
