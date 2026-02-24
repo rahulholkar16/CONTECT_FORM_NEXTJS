@@ -4,6 +4,11 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import React from 'react'
 
+export const metadata = {
+  title: "All messages",
+  description: "Get touch with me.",
+};
+
 const Contacts = () => {
   return (
     <div className="min-h-screen py-8 px-4">
