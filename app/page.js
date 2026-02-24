@@ -1,4 +1,6 @@
 import Contact_form from "@/components/Contact_form";
+import { Button } from '../components/ui/button';
+import Link from "next/link";
 
 export default async function Home() {
   return (
@@ -9,6 +11,9 @@ export default async function Home() {
           <p className="text-xl text-gray-500 max-2xl mx-auto">Contact form with MongoDB and revalidation</p>
         </div>
         <Contact_form />
+        <Link href={'/contacts'}>
+          <Button variant="outline" >All Contacts</Button>
+        </Link>
       </div>
     </main>
   );
